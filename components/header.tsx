@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown, Activity, Clock } from "lucide-react";
+import { Menu, X, ChevronDown, Activity, Clock, Newspaper, BookOpen } from "lucide-react";
 import { services } from "@/lib/services";
 import { cn } from "@/lib/utils";
 
@@ -30,6 +30,7 @@ function LiveClock() {
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isResourcesOpen, setIsResourcesOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-card">
@@ -41,7 +42,7 @@ export function Header() {
               <Activity className="h-3 w-3" />
               LIVE
             </span>
-            <span className="text-muted-foreground">
+            <span className="hidden text-muted-foreground sm:inline">
               NYSE: OPEN | NASDAQ: OPEN | LSE: CLOSED
             </span>
           </div>
@@ -67,7 +68,7 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-0.5 md:flex">
+        <nav className="hidden items-center gap-0.5 lg:flex">
           <Link
             href="/"
             className="border border-transparent px-3 py-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground transition-colors hover:border-border hover:bg-secondary hover:text-foreground"
@@ -78,7 +79,10 @@ export function Header() {
           {/* Services Dropdown */}
           <div className="relative">
             <button
-              onClick={() => setIsServicesOpen(!isServicesOpen)}
+              onClick={() => {
+                setIsServicesOpen(!isServicesOpen);
+                setIsResourcesOpen(false);
+              }}
               className="flex items-center gap-1 border border-transparent px-3 py-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground transition-colors hover:border-border hover:bg-secondary hover:text-foreground"
             >
               Services
@@ -129,6 +133,76 @@ export function Header() {
             )}
           </div>
 
+          {/* Resources Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => {
+                setIsResourcesOpen(!isResourcesOpen);
+                setIsServicesOpen(false);
+              }}
+              className="flex items-center gap-1 border border-transparent px-3 py-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground transition-colors hover:border-border hover:bg-secondary hover:text-foreground"
+            >
+              Resources
+              <ChevronDown
+                className={cn(
+                  "h-3 w-3 transition-transform",
+                  isResourcesOpen && "rotate-180"
+                )}
+              />
+            </button>
+
+            {isResourcesOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={() => setIsResourcesOpen(false)}
+                />
+                <div className="absolute left-0 top-full z-50 mt-1 w-64 border border-border bg-card shadow-xl">
+                  <div className="border-b border-border bg-secondary/50 px-3 py-2">
+                    <span className="text-[10px] font-semibold uppercase tracking-widest text-primary">
+                      Resources & Info
+                    </span>
+                  </div>
+                  <div>
+                    <Link
+                      href="/newsletters"
+                      onClick={() => setIsResourcesOpen(false)}
+                      className="flex items-center gap-3 border-b border-border/50 px-3 py-2.5 transition-colors hover:bg-secondary"
+                    >
+                      <Newspaper className="h-4 w-4 text-primary" />
+                      <div>
+                        <p className="text-xs font-medium text-foreground">Newsletters</p>
+                        <p className="text-[10px] text-muted-foreground">Daily & weekly intelligence</p>
+                      </div>
+                    </Link>
+                    <Link
+                      href="/subscriptions"
+                      onClick={() => setIsResourcesOpen(false)}
+                      className="flex items-center gap-3 border-b border-border/50 px-3 py-2.5 transition-colors hover:bg-secondary"
+                    >
+                      <BookOpen className="h-4 w-4 text-primary" />
+                      <div>
+                        <p className="text-xs font-medium text-foreground">Subscriptions</p>
+                        <p className="text-[10px] text-muted-foreground">Plans & pricing</p>
+                      </div>
+                    </Link>
+                    <Link
+                      href="/get-started"
+                      onClick={() => setIsResourcesOpen(false)}
+                      className="flex items-center gap-3 px-3 py-2.5 transition-colors hover:bg-secondary"
+                    >
+                      <Activity className="h-4 w-4 text-primary" />
+                      <div>
+                        <p className="text-xs font-medium text-foreground">Get Started</p>
+                        <p className="text-[10px] text-muted-foreground">How it works</p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
           <Link
             href="/about"
             className="border border-transparent px-3 py-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground transition-colors hover:border-border hover:bg-secondary hover:text-foreground"
@@ -143,15 +217,15 @@ export function Header() {
           </Link>
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-2 lg:flex">
           <Link
-            href="/login"
+            href="/auth/login"
             className="border border-border px-3 py-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
           >
             Login
           </Link>
           <Link
-            href="/signup"
+            href="/auth/signup"
             className="border border-primary bg-primary px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Get Access
@@ -161,7 +235,7 @@ export function Header() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="border border-border p-1.5 text-muted-foreground transition-colors hover:bg-secondary md:hidden"
+          className="border border-border p-1.5 text-muted-foreground transition-colors hover:bg-secondary lg:hidden"
         >
           {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
         </button>
@@ -169,7 +243,7 @@ export function Header() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="border-t border-border bg-card md:hidden">
+        <div className="border-t border-border bg-card lg:hidden">
           <div className="mx-auto max-w-7xl space-y-0.5 p-2">
             <Link
               href="/"
@@ -178,6 +252,8 @@ export function Header() {
             >
               Home
             </Link>
+
+            {/* Mobile Services */}
             <div className="py-1">
               <p className="px-3 text-[10px] font-semibold uppercase tracking-widest text-primary">
                 Services
@@ -198,6 +274,37 @@ export function Header() {
                 ))}
               </div>
             </div>
+
+            {/* Mobile Resources */}
+            <div className="py-1">
+              <p className="px-3 text-[10px] font-semibold uppercase tracking-widest text-primary">
+                Resources
+              </p>
+              <div className="mt-1 space-y-0.5">
+                <Link
+                  href="/newsletters"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block px-3 py-1.5 text-xs text-foreground transition-colors hover:bg-secondary"
+                >
+                  Newsletters
+                </Link>
+                <Link
+                  href="/subscriptions"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block px-3 py-1.5 text-xs text-foreground transition-colors hover:bg-secondary"
+                >
+                  Subscriptions
+                </Link>
+                <Link
+                  href="/get-started"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block px-3 py-1.5 text-xs text-foreground transition-colors hover:bg-secondary"
+                >
+                  Get Started
+                </Link>
+              </div>
+            </div>
+
             <Link
               href="/about"
               onClick={() => setIsMenuOpen(false)}
@@ -212,16 +319,17 @@ export function Header() {
             >
               Contact
             </Link>
+
             <div className="flex gap-2 pt-2">
               <Link
-                href="/login"
+                href="/auth/login"
                 onClick={() => setIsMenuOpen(false)}
                 className="flex-1 border border-border py-2 text-center text-xs font-medium uppercase tracking-wide text-foreground transition-colors hover:bg-secondary"
               >
                 Login
               </Link>
               <Link
-                href="/signup"
+                href="/auth/signup"
                 onClick={() => setIsMenuOpen(false)}
                 className="flex-1 border border-primary bg-primary py-2 text-center text-xs font-bold uppercase tracking-wide text-primary-foreground transition-colors hover:bg-primary/90"
               >
