@@ -94,7 +94,7 @@ export function HeroSection() {
             {/* Terminal Style Header */}
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-                <span className="text-primary">FINANCIAL</span>
+                <span className="text-primary">CAPITALISSUES</span>
                 <br />
                 INTELLIGENCE
                 <br />
