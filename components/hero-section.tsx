@@ -26,7 +26,7 @@ function TickerBar() {
           >
             <span className="text-xs font-bold text-foreground">{item.symbol}</span>
             <span className="tabular-nums text-xs text-foreground">
-              {item.value.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+              {item.value.toLocaleString("en-US", { minimumFractionDigits: 2 })}
             </span>
             <span
               className={`flex items-center gap-0.5 tabular-nums text-xs font-medium ${
@@ -49,10 +49,12 @@ function TickerBar() {
 }
 
 function TerminalPrompt() {
+  const [mounted, setMounted] = useState(false);
   const [text, setText] = useState("");
   const fullText = "INITIALIZING MARKET INTELLIGENCE TERMINAL...";
   
   useEffect(() => {
+    setMounted(true);
     let index = 0;
     const interval = setInterval(() => {
       setText(fullText.slice(0, index));
@@ -65,8 +67,8 @@ function TerminalPrompt() {
   }, []);
 
   return (
-    <div className="font-mono text-xs text-[#3fb950]">
-      <span className="text-primary">root@capitalissues:~$</span> {text}
+    <div className="font-mono text-xs text-[#3fb950]" suppressHydrationWarning>
+      <span className="text-primary">root@capitalissues:~$</span> {mounted ? text : ""}
       <span className="cursor-blink">_</span>
     </div>
   );
@@ -178,7 +180,7 @@ export function HeroSection() {
                         <span className="text-muted-foreground">{item.name}</span>
                         <div className="flex items-center gap-3">
                           <span className="tabular-nums text-foreground">
-                            {item.value.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                            {item.value.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                           </span>
                           <span
                             className={`tabular-nums font-medium ${

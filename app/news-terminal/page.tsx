@@ -58,24 +58,27 @@ const categoryColors: Record<string, string> = {
   analysis: "text-[#8b949e]",
 };
 
-function formatTimestamp(timestamp: string) {
+function formatTimestamp(timestamp: string, nowMs: number) {
   const date = new Date(timestamp);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
+  const diffMs = nowMs - date.getTime();
   const diffMins = Math.floor(diffMs / 60000);
   const diffHours = Math.floor(diffMins / 60);
   
+  if (diffMins < 1) return "just now";
   if (diffMins < 60) return `${diffMins}m ago`;
   if (diffHours < 24) return `${diffHours}h ago`;
-  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  // Use UTC formatters to ensure server/client consistency
+  const month = date.toLocaleDateString("en-US", { month: "short", timeZone: "UTC" });
+  const day = date.getUTCDate();
+  return `${month} ${day}`;
 }
 
 function formatTime(timestamp: string) {
-  return new Date(timestamp).toLocaleTimeString("en-US", { 
-    hour: "2-digit", 
-    minute: "2-digit",
-    hour12: false 
-  });
+  // Use UTC to ensure server/client consistency
+  const date = new Date(timestamp);
+  const hours = String(date.getUTCHours()).padStart(2, "0");
+  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+  return `${hours}:${minutes}`;
 }
 
 export default function NewsTerminalPage() {
@@ -83,11 +86,23 @@ export default function NewsTerminalPage() {
   const [selectedRegion, setSelectedRegion] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedNews, setSelectedNews] = useState<NewsItem | null>(null);
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTimeStr, setCurrentTimeStr] = useState("--:--:--");
+  const [nowMs, setNowMs] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const [autoRefresh, setAutoRefresh] = useState(true);
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    setMounted(true);
+    const update = () => {
+      const now = new Date();
+      setNowMs(now.getTime());
+      const hours = String(now.getUTCHours()).padStart(2, "0");
+      const minutes = String(now.getUTCMinutes()).padStart(2, "0");
+      const seconds = String(now.getUTCSeconds()).padStart(2, "0");
+      setCurrentTimeStr(`${hours}:${minutes}:${seconds}`);
+    };
+    update();
+    const timer = setInterval(update, 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -157,7 +172,7 @@ export default function NewsTerminalPage() {
             </button>
             <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
               <Clock className="h-3 w-3" />
-              <span>{currentTime.toLocaleTimeString("en-US", { hour12: false })}</span>
+              <span suppressHydrationWarning>{currentTimeStr}</span>
               <span className="text-primary">UTC</span>
             </div>
           </div>
@@ -268,7 +283,9 @@ export default function NewsTerminalPage() {
                   </div>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <span className="font-mono">{formatTime(news.timestamp)}</span>
-                    <span className="text-primary">{formatTimestamp(news.timestamp)}</span>
+                    <span className="text-primary" suppressHydrationWarning>
+                      {mounted ? formatTimestamp(news.timestamp, nowMs) : ""}
+                    </span>
                   </div>
                 </div>
 
@@ -374,13 +391,14 @@ export default function NewsTerminalPage() {
                     Time
                   </p>
                   <p className="font-mono text-sm text-foreground">
-                    {new Date(selectedNews.timestamp).toLocaleString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: false
-                    })}
+                    {(() => {
+                      const d = new Date(selectedNews.timestamp);
+                      const month = d.toLocaleDateString("en-US", { month: "short", timeZone: "UTC" });
+                      const day = d.getUTCDate();
+                      const h = String(d.getUTCHours()).padStart(2, "0");
+                      const m = String(d.getUTCMinutes()).padStart(2, "0");
+                      return `${month} ${day}, ${h}:${m}`;
+                    })()}
                   </p>
                 </div>
                 <div>
