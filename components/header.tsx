@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown, Activity, Clock, Newspaper, BookOpen } from "lucide-react";
+import { Menu, X, ChevronDown, Activity, Clock, Newspaper, BookOpen, Terminal } from "lucide-react";
 import { services } from "@/lib/services";
 import { cn } from "@/lib/utils";
 
@@ -165,6 +165,17 @@ export function Header() {
                   </div>
                   <div>
                     <Link
+                      href="/news-terminal"
+                      onClick={() => setIsResourcesOpen(false)}
+                      className="flex items-center gap-3 border-b border-border/50 px-3 py-2.5 transition-colors hover:bg-secondary"
+                    >
+                      <Terminal className="h-4 w-4 text-primary" />
+                      <div>
+                        <p className="text-xs font-medium text-foreground">News Terminal</p>
+                        <p className="text-[10px] text-muted-foreground">Live newswire feed</p>
+                      </div>
+                    </Link>
+                    <Link
                       href="/newsletters"
                       onClick={() => setIsResourcesOpen(false)}
                       className="flex items-center gap-3 border-b border-border/50 px-3 py-2.5 transition-colors hover:bg-secondary"
@@ -281,6 +292,13 @@ export function Header() {
                 Resources
               </p>
               <div className="mt-1 space-y-0.5">
+                <Link
+                  href="/news-terminal"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block px-3 py-1.5 text-xs text-foreground transition-colors hover:bg-secondary"
+                >
+                  News Terminal
+                </Link>
                 <Link
                   href="/newsletters"
                   onClick={() => setIsMenuOpen(false)}

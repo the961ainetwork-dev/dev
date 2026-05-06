@@ -12,7 +12,8 @@ import {
   Mail,
   MessageSquare,
   Linkedin,
-  BookOpen
+  BookOpen,
+  Users
 } from "lucide-react";
 
 const newsletters = [
@@ -59,11 +60,11 @@ const newsletters = [
 ];
 
 const deliveryChannels = [
-  { icon: Mail, name: "Email", description: "Direct to your inbox" },
-  { icon: MessageSquare, name: "Telegram", description: "Instant delivery" },
-  { icon: MessageSquare, name: "WhatsApp", description: "Mobile alerts" },
-  { icon: Linkedin, name: "LinkedIn", description: "Premium articles" },
-  { icon: BookOpen, name: "Substack", description: "Long-form content" }
+  { icon: Mail, name: "Email", description: "Direct to your inbox with priority delivery" },
+  { icon: MessageSquare, name: "Telegram", description: "Instant delivery via secure channels" },
+  { icon: MessageSquare, name: "WhatsApp", description: "Mobile alerts when you need them" },
+  { icon: Linkedin, name: "LinkedIn", description: "Premium articles and insights" },
+  { icon: BookOpen, name: "Substack", description: "Long-form content and archives" }
 ];
 
 export default function NewslettersPage() {
@@ -109,98 +110,124 @@ export default function NewslettersPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="border-b border-border bg-card px-4 py-16">
-        <div className="mx-auto max-w-5xl text-center">
-          <div className="mb-4 inline-flex items-center gap-2 border border-primary/30 bg-primary/10 px-3 py-1">
+      <section className="border-b border-border bg-card px-4 py-20 md:py-28">
+        <div className="mx-auto max-w-4xl text-center">
+          <div className="mb-6 inline-flex items-center gap-2 border border-primary/30 bg-primary/10 px-4 py-2">
             <Newspaper className="h-4 w-4 text-primary" />
             <span className="font-mono text-xs font-semibold uppercase tracking-wider text-primary">
               Intelligence Newsletters
             </span>
           </div>
-          <h1 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+          
+          <h1 className="mb-6 text-4xl font-bold tracking-tight text-foreground md:text-5xl">
             Stay Informed, <span className="text-primary">Stay Ahead</span>
           </h1>
-          <p className="mx-auto max-w-2xl text-muted-foreground">
+          
+          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted-foreground">
             Curated financial intelligence delivered to your preferred channels. 
-            From daily market briefings to weekly deep-dives, never miss critical MENA market developments.
+            From daily market briefings to weekly deep-dives, never miss critical 
+            MENA market developments.
           </p>
+
+          <div className="mt-10 flex items-center justify-center gap-8">
+            <div className="text-center">
+              <p className="font-mono text-3xl font-bold text-primary">31,500+</p>
+              <p className="mt-1 text-sm text-muted-foreground">Total Subscribers</p>
+            </div>
+            <div className="h-12 w-px bg-border" />
+            <div className="text-center">
+              <p className="font-mono text-3xl font-bold text-primary">4</p>
+              <p className="mt-1 text-sm text-muted-foreground">Newsletter Types</p>
+            </div>
+            <div className="h-12 w-px bg-border" />
+            <div className="text-center">
+              <p className="font-mono text-3xl font-bold text-primary">5</p>
+              <p className="mt-1 text-sm text-muted-foreground">Delivery Channels</p>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Newsletter Grid */}
-      <section className="px-4 py-16">
-        <div className="mx-auto max-w-5xl">
-          <div className="mb-8">
-            <h2 className="mb-2 text-xl font-bold text-foreground">Our Newsletters</h2>
-            <p className="text-sm text-muted-foreground">
-              Select the newsletters that match your intelligence needs
+      <section className="px-4 py-20 md:py-28">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-foreground">Our Newsletters</h2>
+            <p className="mx-auto max-w-xl text-base leading-relaxed text-muted-foreground">
+              Select the newsletters that match your intelligence needs. 
+              Each publication is crafted by our team of expert analysts.
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-8 md:grid-cols-2">
             {newsletters.map((newsletter) => (
               <div 
                 key={newsletter.id} 
-                className={`border bg-card transition-colors ${
+                className={`border bg-card transition-all duration-200 ${
                   selectedNewsletters.includes(newsletter.id)
-                    ? "border-primary"
-                    : "border-border"
+                    ? "border-primary shadow-lg shadow-primary/10"
+                    : "border-border hover:border-primary/50"
                 }`}
               >
                 {/* Newsletter Header */}
-                <div className="flex items-start justify-between border-b border-border bg-secondary/50 p-4">
+                <div className="flex items-start justify-between border-b border-border bg-secondary/50 p-6">
                   <div>
-                    <div className="mb-1 flex items-center gap-2">
+                    <div className="mb-2 flex items-center gap-3">
                       {newsletter.featured && (
-                        <span className="bg-primary px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider text-primary-foreground">
+                        <span className="bg-primary px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
                           Popular
                         </span>
                       )}
-                      <h3 className="text-sm font-semibold text-foreground">{newsletter.name}</h3>
+                      <h3 className="text-lg font-semibold text-foreground">{newsletter.name}</h3>
                     </div>
-                    <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <span className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4" />
                         {newsletter.frequency}
                       </span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
+                      <span className="flex items-center gap-2">
+                        <Clock className="h-4 w-4" />
                         {newsletter.time}
                       </span>
                     </div>
                   </div>
                   <button
                     onClick={() => toggleNewsletter(newsletter.id)}
-                    className={`flex h-6 w-6 items-center justify-center border transition-colors ${
+                    className={`flex h-8 w-8 items-center justify-center border transition-all ${
                       selectedNewsletters.includes(newsletter.id)
                         ? "border-primary bg-primary text-primary-foreground"
                         : "border-border bg-background text-muted-foreground hover:border-primary"
                     }`}
                   >
                     {selectedNewsletters.includes(newsletter.id) && (
-                      <CheckCircle className="h-4 w-4" />
+                      <CheckCircle className="h-5 w-5" />
                     )}
                   </button>
                 </div>
 
                 {/* Newsletter Content */}
-                <div className="p-4">
-                  <p className="mb-4 text-xs text-muted-foreground">{newsletter.description}</p>
+                <div className="p-6">
+                  <p className="mb-6 text-base leading-relaxed text-muted-foreground">
+                    {newsletter.description}
+                  </p>
                   
-                  <div className="mb-3 flex flex-wrap gap-1">
+                  <div className="mb-6 flex flex-wrap gap-2">
                     {newsletter.topics.map((topic) => (
                       <span
                         key={topic}
-                        className="border border-border bg-secondary/50 px-2 py-0.5 text-[10px] text-muted-foreground"
+                        className="border border-border bg-secondary/50 px-3 py-1 text-xs text-muted-foreground"
                       >
                         {topic}
                       </span>
                     ))}
                   </div>
 
-                  <p className="font-mono text-[10px] text-primary">
-                    {newsletter.subscribers} subscribers
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <Users className="h-4 w-4 text-primary" />
+                    <span className="font-mono text-sm text-primary">
+                      {newsletter.subscribers} subscribers
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}
@@ -209,38 +236,39 @@ export default function NewslettersPage() {
       </section>
 
       {/* Subscribe Form */}
-      <section className="border-t border-border bg-card px-4 py-16">
+      <section className="border-t border-border bg-card px-4 py-20 md:py-28">
         <div className="mx-auto max-w-xl">
           <div className="border border-border bg-background">
-            <div className="border-b border-border bg-secondary/50 px-4 py-2">
-              <div className="flex items-center gap-2">
-                <Terminal className="h-4 w-4 text-primary" />
-                <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+            <div className="border-b border-border bg-secondary/50 px-6 py-4">
+              <div className="flex items-center gap-3">
+                <Terminal className="h-5 w-5 text-primary" />
+                <span className="text-sm font-semibold uppercase tracking-wider text-primary">
                   Subscribe Now
                 </span>
               </div>
             </div>
 
-            <div className="p-6">
+            <div className="p-8">
               {success ? (
-                <div className="text-center">
-                  <CheckCircle className="mx-auto mb-4 h-12 w-12 text-[#3fb950]" />
-                  <h3 className="mb-2 text-lg font-bold text-foreground">Subscription Confirmed</h3>
-                  <p className="mb-4 text-sm text-muted-foreground">
-                    Welcome to CapitalIssuesIQ newsletters. Check your inbox for confirmation.
+                <div className="py-8 text-center">
+                  <CheckCircle className="mx-auto mb-6 h-16 w-16 text-[#3fb950]" />
+                  <h3 className="mb-3 text-2xl font-bold text-foreground">Subscription Confirmed</h3>
+                  <p className="mb-6 text-base leading-relaxed text-muted-foreground">
+                    Welcome to CapitalIssuesIQ newsletters. Check your inbox for confirmation 
+                    and your first briefing.
                   </p>
                   <button
                     onClick={() => setSuccess(false)}
-                    className="text-xs text-primary hover:underline"
+                    className="text-sm text-primary hover:underline"
                   >
                     Subscribe to more newsletters
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubscribe} className="space-y-4">
+                <form onSubmit={handleSubscribe} className="space-y-6">
                   <div>
-                    <label className="mb-1.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                      <Mail className="h-3 w-3" />
+                    <label className="mb-2 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                      <Mail className="h-4 w-4" />
                       Email Address
                     </label>
                     <input
@@ -248,21 +276,21 @@ export default function NewslettersPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      className="w-full border border-border bg-background px-4 py-2.5 font-mono text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      className="w-full border border-border bg-background px-4 py-3 font-mono text-base text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                       placeholder="your@email.com"
                     />
                   </div>
 
                   {selectedNewsletters.length > 0 && (
-                    <div className="rounded border border-primary/30 bg-primary/5 p-3">
-                      <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-primary">
+                    <div className="rounded border border-primary/30 bg-primary/5 p-4">
+                      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-primary">
                         Selected Newsletters ({selectedNewsletters.length})
                       </p>
-                      <div className="flex flex-wrap gap-1">
+                      <div className="flex flex-wrap gap-2">
                         {selectedNewsletters.map(id => {
                           const nl = newsletters.find(n => n.id === id);
                           return nl ? (
-                            <span key={id} className="border border-primary/30 bg-primary/10 px-2 py-0.5 text-[10px] text-primary">
+                            <span key={id} className="border border-primary/30 bg-primary/10 px-3 py-1 text-sm text-primary">
                               {nl.name}
                             </span>
                           ) : null;
@@ -274,20 +302,20 @@ export default function NewslettersPage() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="flex w-full items-center justify-center gap-2 border border-primary bg-primary px-4 py-3 text-sm font-bold uppercase tracking-wider text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex w-full items-center justify-center gap-2 border border-primary bg-primary px-6 py-4 text-base font-bold uppercase tracking-wider text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {loading ? (
                       <span className="animate-pulse">Subscribing...</span>
                     ) : (
                       <>
                         Subscribe Now
-                        <ArrowRight className="h-4 w-4" />
+                        <ArrowRight className="h-5 w-5" />
                       </>
                     )}
                   </button>
 
-                  <p className="text-center text-[10px] text-muted-foreground">
-                    Free subscription. Unsubscribe anytime. No spam.
+                  <p className="text-center text-sm text-muted-foreground">
+                    Free subscription. Unsubscribe anytime. No spam, ever.
                   </p>
                 </form>
               )}
@@ -297,22 +325,23 @@ export default function NewslettersPage() {
       </section>
 
       {/* Delivery Channels */}
-      <section className="border-t border-border px-4 py-16">
-        <div className="mx-auto max-w-5xl">
-          <div className="mb-8 text-center">
-            <h2 className="mb-2 text-xl font-bold text-foreground">Delivery Channels</h2>
-            <p className="text-sm text-muted-foreground">
-              Receive intelligence through your preferred platform
+      <section className="border-t border-border px-4 py-20 md:py-28">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-foreground">Delivery Channels</h2>
+            <p className="mx-auto max-w-xl text-base leading-relaxed text-muted-foreground">
+              Receive intelligence through your preferred platform. 
+              Choose one or multiple channels to stay informed.
             </p>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-6">
             {deliveryChannels.map((channel) => (
-              <div key={channel.name} className="flex items-center gap-3 border border-border bg-card px-4 py-3">
-                <channel.icon className="h-5 w-5 text-primary" />
+              <div key={channel.name} className="flex items-center gap-4 border border-border bg-card px-6 py-5">
+                <channel.icon className="h-6 w-6 text-primary" />
                 <div>
-                  <p className="text-sm font-semibold text-foreground">{channel.name}</p>
-                  <p className="text-[10px] text-muted-foreground">{channel.description}</p>
+                  <p className="text-base font-semibold text-foreground">{channel.name}</p>
+                  <p className="text-sm text-muted-foreground">{channel.description}</p>
                 </div>
               </div>
             ))}
@@ -320,29 +349,29 @@ export default function NewslettersPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="border-t border-border bg-primary/5 px-4 py-16">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="mb-4 text-2xl font-bold text-foreground">
-            Want Full Platform Access?
+      {/* News Terminal CTA */}
+      <section className="border-t border-border bg-primary/5 px-4 py-20 md:py-28">
+        <div className="mx-auto max-w-4xl text-center">
+          <h2 className="mb-4 text-3xl font-bold text-foreground">
+            Want Real-Time News?
           </h2>
-          <p className="mb-8 text-muted-foreground">
-            Newsletters are just the beginning. Unlock the full CapitalIssuesIQ 
-            terminal for real-time data, analytics, and premium research.
+          <p className="mb-10 text-lg leading-relaxed text-muted-foreground">
+            Access our live news terminal for real-time market intelligence. 
+            100+ stories updated throughout the day with breaking alerts and deep analysis.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              href="/subscriptions"
-              className="flex items-center gap-2 border border-primary bg-primary px-8 py-3 text-sm font-bold uppercase tracking-wider text-primary-foreground transition-colors hover:bg-primary/90"
+              href="/news-terminal"
+              className="flex items-center gap-2 border border-primary bg-primary px-8 py-4 text-base font-bold uppercase tracking-wider text-primary-foreground transition-colors hover:bg-primary/90"
             >
-              View Plans
-              <ArrowRight className="h-4 w-4" />
+              <Terminal className="h-5 w-5" />
+              Open News Terminal
             </Link>
             <Link
-              href="/get-started"
-              className="border border-border bg-background px-8 py-3 text-sm font-medium uppercase tracking-wider text-foreground transition-colors hover:bg-secondary"
+              href="/subscriptions"
+              className="border border-border bg-background px-8 py-4 text-base font-medium uppercase tracking-wider text-foreground transition-colors hover:bg-secondary"
             >
-              How It Works
+              View Full Plans
             </Link>
           </div>
         </div>

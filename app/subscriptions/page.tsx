@@ -7,7 +7,7 @@ const plans = [
     name: "Analyst",
     price: "$299",
     period: "/month",
-    description: "For individual professionals seeking MENA market intelligence",
+    description: "For individual professionals seeking MENA market intelligence and daily briefings.",
     icon: Zap,
     featured: false,
     features: [
@@ -29,7 +29,7 @@ const plans = [
     name: "Professional",
     price: "$799",
     period: "/month",
-    description: "For serious traders and analysts requiring deeper insights",
+    description: "For serious traders and analysts requiring deeper insights and comprehensive coverage.",
     icon: Crown,
     featured: true,
     features: [
@@ -52,7 +52,7 @@ const plans = [
     name: "Enterprise",
     price: "Custom",
     period: "",
-    description: "For institutions requiring comprehensive coverage and integration",
+    description: "For institutions requiring comprehensive coverage, custom integrations, and dedicated support.",
     icon: Building,
     featured: false,
     features: [
@@ -75,17 +75,17 @@ const addOns = [
   {
     name: "Capital Issues Publications",
     price: "$49/month",
-    description: "Access to our research library including The Lebanon Ponzi Scheme, The Hormuz World Order, and Ecostats 2026"
+    description: "Access to our complete research library including The Lebanon Ponzi Scheme, The Hormuz World Order, and Ecostats 2026."
   },
   {
     name: "Daily Infographics",
     price: "$29/month", 
-    description: "Proprietary visual data narratives delivered daily to your inbox"
+    description: "Proprietary visual data narratives delivered daily to help you see and understand market trends at a glance."
   },
   {
     name: "Premium Podcasts",
     price: "$19/month",
-    description: "Audio briefings and expert interviews in an interactive format"
+    description: "Audio briefings and expert interviews in an interactive conversational format for busy professionals."
   }
 ];
 
@@ -98,88 +98,93 @@ export default function SubscriptionsPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="border-b border-border bg-card px-4 py-16">
-        <div className="mx-auto max-w-5xl text-center">
-          <div className="mb-4 inline-flex items-center gap-2 border border-primary/30 bg-primary/10 px-3 py-1">
+      <section className="border-b border-border bg-card px-4 py-20 md:py-28">
+        <div className="mx-auto max-w-4xl text-center">
+          <div className="mb-6 inline-flex items-center gap-2 border border-primary/30 bg-primary/10 px-4 py-2">
             <Terminal className="h-4 w-4 text-primary" />
             <span className="font-mono text-xs font-semibold uppercase tracking-wider text-primary">
               Subscription Plans
             </span>
           </div>
-          <h1 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+          
+          <h1 className="mb-6 text-4xl font-bold tracking-tight text-foreground md:text-5xl">
             Choose Your <span className="text-primary">Intelligence Level</span>
           </h1>
-          <p className="mx-auto max-w-2xl text-muted-foreground">
+          
+          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted-foreground">
             Flexible plans designed for every type of financial professional. 
-            From individual analysts to enterprise teams, we have a solution for you.
+            From individual analysts to enterprise teams, we have a solution 
+            tailored to your needs.
           </p>
         </div>
       </section>
 
       {/* Pricing Grid */}
-      <section className="px-4 py-16">
+      <section className="px-4 py-20 md:py-28">
         <div className="mx-auto max-w-6xl">
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-3">
             {plans.map((plan) => (
               <div 
                 key={plan.id} 
                 className={`relative border bg-card ${
                   plan.featured 
-                    ? "border-primary" 
+                    ? "border-primary shadow-lg shadow-primary/10" 
                     : "border-border"
                 }`}
               >
                 {plan.featured && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                    <span className="bg-primary px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary-foreground">
                       Most Popular
                     </span>
                   </div>
                 )}
 
                 {/* Plan Header */}
-                <div className={`border-b px-6 py-4 ${
+                <div className={`border-b px-6 py-6 ${
                   plan.featured 
                     ? "border-primary/30 bg-primary/10" 
                     : "border-border bg-secondary/50"
                 }`}>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                         {plan.name}
                       </p>
-                      <div className="mt-1 flex items-baseline gap-1">
-                        <span className="text-3xl font-bold text-foreground">{plan.price}</span>
-                        <span className="text-sm text-muted-foreground">{plan.period}</span>
+                      <div className="mt-2 flex items-baseline gap-1">
+                        <span className="text-4xl font-bold text-foreground">{plan.price}</span>
+                        <span className="text-base text-muted-foreground">{plan.period}</span>
                       </div>
                     </div>
-                    <plan.icon className={`h-8 w-8 ${plan.featured ? "text-primary" : "text-muted-foreground"}`} />
+                    <plan.icon className={`h-10 w-10 ${plan.featured ? "text-primary" : "text-muted-foreground"}`} />
                   </div>
-                  <p className="mt-2 text-xs text-muted-foreground">{plan.description}</p>
+                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                    {plan.description}
+                  </p>
                 </div>
 
                 {/* Features */}
                 <div className="p-6">
-                  <p className="mb-3 text-[10px] font-semibold uppercase tracking-wider text-primary">
+                  <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-primary">
                     Included Features
                   </p>
-                  <ul className="space-y-2">
+                  <ul className="space-y-3">
                     {plan.features.map((feature, i) => (
-                      <li key={i} className="flex items-start gap-2 text-xs text-foreground">
-                        <Check className="mt-0.5 h-3 w-3 shrink-0 text-[#3fb950]" />
-                        {feature}
+                      <li key={i} className="flex items-start gap-3 text-sm text-foreground">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#3fb950]" />
+                        <span className="leading-relaxed">{feature}</span>
                       </li>
                     ))}
                   </ul>
 
                   {plan.limitations.length > 0 && (
                     <>
-                      <p className="mb-2 mt-4 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      <p className="mb-3 mt-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                         Limitations
                       </p>
-                      <ul className="space-y-1">
+                      <ul className="space-y-2">
                         {plan.limitations.map((limitation, i) => (
-                          <li key={i} className="text-xs text-muted-foreground">
+                          <li key={i} className="text-sm leading-relaxed text-muted-foreground">
                             • {limitation}
                           </li>
                         ))}
@@ -192,7 +197,7 @@ export default function SubscriptionsPage() {
                 <div className="border-t border-border p-6">
                   <Link
                     href={plan.id === "enterprise" ? "/contact" : "/auth/signup"}
-                    className={`flex w-full items-center justify-center gap-2 px-4 py-3 text-sm font-bold uppercase tracking-wider transition-colors ${
+                    className={`flex w-full items-center justify-center gap-2 px-4 py-4 text-base font-bold uppercase tracking-wider transition-colors ${
                       plan.featured
                         ? "border border-primary bg-primary text-primary-foreground hover:bg-primary/90"
                         : "border border-border bg-secondary text-foreground hover:bg-secondary/80"
@@ -209,23 +214,24 @@ export default function SubscriptionsPage() {
       </section>
 
       {/* Add-ons Section */}
-      <section className="border-t border-border bg-card px-4 py-16">
+      <section className="border-t border-border bg-card px-4 py-20 md:py-28">
         <div className="mx-auto max-w-5xl">
-          <div className="mb-8 text-center">
-            <h2 className="mb-2 text-2xl font-bold text-foreground">Optional Add-ons</h2>
-            <p className="text-sm text-muted-foreground">
-              Enhance your subscription with additional intelligence products
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-foreground">Optional Add-ons</h2>
+            <p className="mx-auto max-w-xl text-base leading-relaxed text-muted-foreground">
+              Enhance your subscription with additional intelligence products 
+              tailored for specific needs.
             </p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-3">
             {addOns.map((addon) => (
               <div key={addon.name} className="border border-border bg-background p-6">
-                <div className="mb-2 flex items-center justify-between">
-                  <h3 className="text-sm font-semibold text-foreground">{addon.name}</h3>
-                  <span className="font-mono text-sm text-primary">{addon.price}</span>
+                <div className="mb-4 flex items-center justify-between">
+                  <h3 className="text-base font-semibold text-foreground">{addon.name}</h3>
+                  <span className="font-mono text-base text-primary">{addon.price}</span>
                 </div>
-                <p className="text-xs text-muted-foreground">{addon.description}</p>
+                <p className="text-sm leading-relaxed text-muted-foreground">{addon.description}</p>
               </div>
             ))}
           </div>
@@ -233,29 +239,30 @@ export default function SubscriptionsPage() {
       </section>
 
       {/* Deliverables Section */}
-      <section className="border-t border-border px-4 py-16">
+      <section className="border-t border-border px-4 py-20 md:py-28">
         <div className="mx-auto max-w-5xl">
-          <div className="mb-8 text-center">
-            <h2 className="mb-2 text-2xl font-bold text-foreground">Premium Dispatches</h2>
-            <p className="text-sm text-muted-foreground">
-              Specialized reports and insights delivered on your schedule
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-foreground">Premium Dispatches</h2>
+            <p className="mx-auto max-w-xl text-base leading-relaxed text-muted-foreground">
+              Specialized reports and insights delivered on your schedule. 
+              Each dispatch is crafted by our expert analysts.
             </p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2">
             {[
-              { name: "Lebanon Daily Report", frequency: "Daily", description: "Comprehensive daily briefing on Lebanese markets and economy" },
-              { name: "Market Alerts & Risk Update", frequency: "Bi-Daily", description: "Specialized risk analysis and market-moving alerts" },
-              { name: "Arab Finance & Banking Monitor", frequency: "Weekly", description: "Banking sector analysis across the Arab region" },
-              { name: "New Economy Insights Report", frequency: "Weekly", description: "Coverage of digital transformation and emerging sectors" }
+              { name: "Lebanon Daily Report", frequency: "Daily", description: "Comprehensive daily briefing on Lebanese markets, banking, and economic policy" },
+              { name: "Market Alerts & Risk Update", frequency: "Bi-Daily", description: "Specialized risk analysis and breaking market-moving alerts across MENA" },
+              { name: "Arab Finance & Banking Monitor", frequency: "Weekly", description: "In-depth banking sector analysis across the GCC and Levant regions" },
+              { name: "New Economy Insights Report", frequency: "Weekly", description: "Coverage of digital transformation, startups, and emerging sectors" }
             ].map((report) => (
-              <div key={report.name} className="flex items-start gap-4 border border-border bg-card p-4">
-                <div className="shrink-0 border border-primary/30 bg-primary/10 px-2 py-1">
-                  <span className="font-mono text-[10px] font-bold text-primary">{report.frequency}</span>
+              <div key={report.name} className="flex items-start gap-5 border border-border bg-card p-6">
+                <div className="shrink-0 border border-primary/30 bg-primary/10 px-3 py-1.5">
+                  <span className="font-mono text-xs font-bold text-primary">{report.frequency}</span>
                 </div>
                 <div>
-                  <h3 className="mb-1 text-sm font-semibold text-foreground">{report.name}</h3>
-                  <p className="text-xs text-muted-foreground">{report.description}</p>
+                  <h3 className="mb-2 text-base font-semibold text-foreground">{report.name}</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{report.description}</p>
                 </div>
               </div>
             ))}
@@ -264,26 +271,26 @@ export default function SubscriptionsPage() {
       </section>
 
       {/* FAQ / CTA */}
-      <section className="border-t border-border bg-primary/5 px-4 py-16">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="mb-4 text-2xl font-bold text-foreground">
+      <section className="border-t border-border bg-primary/5 px-4 py-20 md:py-28">
+        <div className="mx-auto max-w-4xl text-center">
+          <h2 className="mb-4 text-3xl font-bold text-foreground">
             Questions About Plans?
           </h2>
-          <p className="mb-8 text-muted-foreground">
+          <p className="mb-10 text-lg leading-relaxed text-muted-foreground">
             Our team is ready to help you choose the right plan for your needs. 
-            Schedule a demo or contact our sales team.
+            Schedule a demo or contact our sales team for personalized guidance.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/contact"
-              className="flex items-center gap-2 border border-primary bg-primary px-8 py-3 text-sm font-bold uppercase tracking-wider text-primary-foreground transition-colors hover:bg-primary/90"
+              className="flex items-center gap-2 border border-primary bg-primary px-8 py-4 text-base font-bold uppercase tracking-wider text-primary-foreground transition-colors hover:bg-primary/90"
             >
               Contact Sales
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-5 w-5" />
             </Link>
             <Link
               href="/get-started"
-              className="border border-border bg-background px-8 py-3 text-sm font-medium uppercase tracking-wider text-foreground transition-colors hover:bg-secondary"
+              className="border border-border bg-background px-8 py-4 text-base font-medium uppercase tracking-wider text-foreground transition-colors hover:bg-secondary"
             >
               How It Works
             </Link>
