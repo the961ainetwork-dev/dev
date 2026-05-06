@@ -1,86 +1,110 @@
 import Link from "next/link";
-import { ArrowRight, CheckCircle } from "lucide-react";
+import { ArrowRight, CheckCircle, Terminal } from "lucide-react";
 import { services } from "@/lib/services";
-import { cn } from "@/lib/utils";
 
 export function ServiceBanners() {
   return (
-    <section className="bg-card py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Platform Capabilities
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            Deep dive into each of our specialized intelligence services.
-          </p>
+    <section className="bg-card py-16">
+      <div className="mx-auto max-w-7xl px-4">
+        {/* Section Header */}
+        <div className="mb-8 border border-border">
+          <div className="border-b border-border bg-secondary/50 px-4 py-2">
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-primary">
+              Module Details
+            </span>
+          </div>
+          <div className="p-4">
+            <h2 className="text-xl font-bold text-foreground sm:text-2xl">
+              PLATFORM CAPABILITIES
+            </h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Deep dive into each of our specialized intelligence services.
+            </p>
+          </div>
         </div>
 
-        <div className="mt-16 space-y-16">
+        {/* Service Details */}
+        <div className="space-y-6">
           {services.map((service, index) => (
             <div
               key={service.id}
-              className={cn(
-                "flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-16",
-                index % 2 === 1 && "lg:flex-row-reverse"
-              )}
+              className="border border-border bg-background transition-colors hover:border-primary/30"
             >
-              {/* Content */}
-              <div className="flex-1 space-y-6">
-                <div
-                  className={cn(
-                    "inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br",
-                    service.gradient
-                  )}
-                >
-                  <service.icon className="h-7 w-7 text-white" />
+              {/* Service Header */}
+              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border bg-secondary/30 px-4 py-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center border border-primary/50 bg-primary/10">
+                    <service.icon className="h-4 w-4 text-primary" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold tabular-nums text-muted-foreground">
+                        MODULE {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-xs text-border">|</span>
+                      <span className="text-sm font-bold uppercase tracking-wide text-foreground">
+                        {service.shortName}
+                      </span>
+                    </div>
+                    <p className="text-[10px] uppercase tracking-wide text-[#58a6ff]">
+                      {service.tagline}
+                    </p>
+                  </div>
                 </div>
-
-                <div>
-                  <h3 className="text-2xl font-bold text-foreground sm:text-3xl">
-                    {service.name}
-                  </h3>
-                  <p className="mt-1 text-lg font-medium text-primary">
-                    {service.tagline}
-                  </p>
-                </div>
-
-                <p className="text-muted-foreground leading-relaxed">
-                  {service.description}
-                </p>
-
-                <ul className="grid gap-3 sm:grid-cols-2">
-                  {service.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-2">
-                      <CheckCircle className="h-5 w-5 flex-shrink-0 text-primary" />
-                      <span className="text-sm text-foreground">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
                 <Link
                   href={service.href}
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+                  className="flex items-center gap-1 border border-primary bg-primary px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-primary-foreground transition-colors hover:bg-primary/90"
                 >
-                  Explore {service.shortName}
-                  <ArrowRight className="h-4 w-4" />
+                  Access Module
+                  <ArrowRight className="h-3 w-3" />
                 </Link>
               </div>
 
-              {/* Visual */}
-              <div className="flex-1">
-                <div
-                  className={cn(
-                    "relative aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br p-px",
-                    service.gradient
-                  )}
-                >
-                  <div className="absolute inset-px rounded-2xl bg-background">
-                    <div className="flex h-full flex-col items-center justify-center p-8">
-                      <service.icon className="h-16 w-16 text-muted-foreground/30" />
-                      <p className="mt-4 text-center text-sm text-muted-foreground">
-                        {service.shortName} Dashboard Preview
-                      </p>
+              {/* Service Content */}
+              <div className="grid gap-6 p-4 lg:grid-cols-2">
+                {/* Description */}
+                <div>
+                  <p className="text-xs leading-relaxed text-muted-foreground">
+                    {service.description}
+                  </p>
+                  
+                  {/* Features List */}
+                  <div className="mt-4 space-y-2">
+                    {service.features.slice(0, 4).map((feature) => (
+                      <div key={feature} className="flex items-start gap-2">
+                        <CheckCircle className="mt-0.5 h-3 w-3 flex-shrink-0 text-[#3fb950]" />
+                        <span className="text-xs text-foreground">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Terminal Preview */}
+                <div className="border border-border bg-card">
+                  <div className="flex items-center gap-2 border-b border-border bg-background px-3 py-1.5">
+                    <Terminal className="h-3 w-3 text-muted-foreground" />
+                    <span className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
+                      {service.shortName} Preview
+                    </span>
+                  </div>
+                  <div className="p-3">
+                    <div className="space-y-1.5 text-xs">
+                      <div className="text-[#3fb950]">
+                        <span className="text-primary">&gt;</span> Loading {service.shortName.toLowerCase().replace(/\s/g, "_")}_module...
+                      </div>
+                      <div className="text-muted-foreground">
+                        <span className="text-primary">&gt;</span> Initializing data streams...
+                      </div>
+                      <div className="text-muted-foreground">
+                        <span className="text-primary">&gt;</span> Connecting to {service.features.length} data sources...
+                      </div>
+                      <div className="text-[#3fb950]">
+                        <span className="text-primary">&gt;</span> Module ready. Status: ACTIVE
+                      </div>
+                      <div className="mt-2 flex items-center gap-2">
+                        <span className="text-primary">$</span>
+                        <span className="cursor-blink text-foreground">_</span>
+                      </div>
                     </div>
                   </div>
                 </div>

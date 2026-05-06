@@ -1,60 +1,117 @@
-import { Zap, Lock, Globe, Bot } from "lucide-react";
+import { Zap, Lock, Globe, Bot, BarChart3, Shield } from "lucide-react";
 
 const features = [
   {
     icon: Zap,
+    code: "EVT-DRV",
     title: "Event-Driven Alpha",
     description:
-      "Know how the market mood is shifting in real-time, not just that a stock is falling. Get ahead with sentiment-based signals.",
+      "Real-time sentiment shifts and market psychology decoded before price action manifests.",
+    metric: "<50ms",
+    metricLabel: "Latency",
   },
   {
     icon: Lock,
+    code: "VRF-INT",
     title: "Verified Intelligence",
     description:
-      "AI-powered news verification cuts through bot-generated noise, providing a trust layer that institutional feeds lack.",
+      "AI-powered news verification cuts through bot-generated noise with institutional-grade trust layer.",
+    metric: "99.7%",
+    metricLabel: "Accuracy",
   },
   {
     icon: Globe,
+    code: "GLB-COV",
     title: "Global Coverage",
     description:
-      "350+ independent analysts covering every major market, industry, and region with data-driven insights.",
+      "350+ independent analysts covering every major market, industry, and region worldwide.",
+    metric: "150+",
+    metricLabel: "Markets",
   },
   {
     icon: Bot,
+    code: "AGT-AI",
     title: "Agentic AI",
     description:
-      "Beyond showing data, our autonomous AI agents act on insights through the 961AI Network integration.",
+      "Autonomous AI agents that act on insights through the 961AI Network integration.",
+    metric: "24/7",
+    metricLabel: "Active",
+  },
+  {
+    icon: BarChart3,
+    code: "ADV-ANL",
+    title: "Advanced Analytics",
+    description:
+      "Multi-factor attribution, risk decomposition, and performance analytics at your fingertips.",
+    metric: "1M+",
+    metricLabel: "Signals/Day",
+  },
+  {
+    icon: Shield,
+    code: "RSK-MGT",
+    title: "Risk Management",
+    description:
+      "Enterprise-grade VaR, stress testing, and regulatory compliance tools built for scale.",
+    metric: "Basel III",
+    metricLabel: "Compliant",
   },
 ];
 
 export function FeaturesSection() {
   return (
-    <section className="bg-muted py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            The Competitive Edge
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            What sets Capital Issues apart from traditional financial terminals.
-          </p>
+    <section className="bg-background py-16">
+      <div className="mx-auto max-w-7xl px-4">
+        {/* Section Header */}
+        <div className="mb-8 border border-border">
+          <div className="border-b border-border bg-secondary/50 px-4 py-2">
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-primary">
+              Competitive Advantages
+            </span>
+          </div>
+          <div className="p-4">
+            <h2 className="text-xl font-bold text-foreground sm:text-2xl">
+              THE EDGE
+            </h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              What sets Capital Issues apart from traditional financial terminals.
+            </p>
+          </div>
         </div>
 
-        <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Features Grid */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
             <div
-              key={feature.title}
-              className="rounded-2xl border border-border bg-card p-6"
+              key={feature.code}
+              className="border border-border bg-card transition-colors hover:border-primary/50"
             >
-              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                <feature.icon className="h-6 w-6 text-primary" />
+              {/* Feature Header */}
+              <div className="flex items-center justify-between border-b border-border bg-secondary/30 px-4 py-2">
+                <div className="flex items-center gap-2">
+                  <feature.icon className="h-4 w-4 text-primary" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
+                    {feature.code}
+                  </span>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-bold tabular-nums text-[#3fb950]">
+                    {feature.metric}
+                  </p>
+                  <p className="text-[8px] uppercase tracking-wide text-muted-foreground">
+                    {feature.metricLabel}
+                  </p>
+                </div>
               </div>
-              <h3 className="text-lg font-semibold text-foreground">
-                {feature.title}
-              </h3>
-              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                {feature.description}
-              </p>
+              
+              {/* Feature Content */}
+              <div className="p-4">
+                <h3 className="text-sm font-bold text-foreground">
+                  {feature.title}
+                </h3>
+                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                  {feature.description}
+                </p>
+              </div>
             </div>
           ))}
         </div>

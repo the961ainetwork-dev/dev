@@ -30,7 +30,7 @@ export function CTASection() {
 
       if (!response.ok) {
         if (response.status === 409) {
-          setError("You're already subscribed!");
+          setError("EMAIL ALREADY REGISTERED IN SYSTEM");
         } else {
           throw new Error(data.error || "Failed to subscribe");
         }
@@ -40,95 +40,135 @@ export function CTASection() {
       setIsSubscribed(true);
       setEmail("");
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError("CONNECTION ERROR. RETRY TRANSMISSION.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <section className="bg-background py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-accent p-px">
-          <div className="relative rounded-3xl bg-background px-8 py-16 sm:px-16 sm:py-20">
-            <div className="absolute inset-0 overflow-hidden">
-              <div className="absolute -right-1/4 -top-1/4 h-[500px] w-[500px] rounded-full bg-primary/5 blur-3xl" />
-              <div className="absolute -bottom-1/4 -left-1/4 h-[500px] w-[500px] rounded-full bg-accent/5 blur-3xl" />
-            </div>
+    <section className="bg-background py-16">
+      <div className="mx-auto max-w-7xl px-4">
+        <div className="border border-primary bg-card">
+          {/* Header */}
+          <div className="border-b border-primary bg-primary/10 px-4 py-2">
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-primary">
+              System Access Request
+            </span>
+          </div>
 
-            <div className="relative mx-auto max-w-2xl text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                Ready to Transform Your Trading Edge?
-              </h2>
-              <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
-                Join the institutions already using Capital Issues to stay ahead of the market.
-                Request early access today.
-              </p>
-
-              <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <Link
-                  href="/signup"
-                  className="inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/30"
-                >
-                  Request Access
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 rounded-lg border border-border px-8 py-3.5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
-                >
-                  Contact Sales
-                </Link>
+          {/* Content */}
+          <div className="p-6 sm:p-8">
+            <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+              {/* Left - Main CTA */}
+              <div className="space-y-4">
+                <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
+                  READY TO TRANSFORM
+                  <br />
+                  <span className="text-primary">YOUR TRADING EDGE?</span>
+                </h2>
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  Join leading institutions using Capital Issues for real-time market intelligence. 
+                  Request terminal access to unlock institutional-grade research, sentiment analysis, 
+                  and AI-powered insights.
+                </p>
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <Link
+                    href="/signup"
+                    className="inline-flex items-center justify-center gap-2 border border-primary bg-primary px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-primary-foreground transition-colors hover:bg-primary/90"
+                  >
+                    Request Terminal Access
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center justify-center gap-2 border border-border px-5 py-2.5 text-xs font-medium uppercase tracking-wide text-foreground transition-colors hover:bg-secondary"
+                  >
+                    Contact Sales
+                  </Link>
+                </div>
               </div>
 
-              {/* Newsletter Signup */}
-              <div className="mt-12 border-t border-border pt-10">
-                <h3 className="text-lg font-semibold text-foreground">
-                  Stay Updated
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Subscribe to our newsletter for market insights and platform updates.
+              {/* Right - Newsletter */}
+              <div className="border border-border bg-background p-4">
+                <div className="mb-4 flex items-center gap-2">
+                  <Mail className="h-4 w-4 text-primary" />
+                  <span className="text-xs font-bold uppercase tracking-wide text-foreground">
+                    Intelligence Briefing
+                  </span>
+                </div>
+                <p className="mb-4 text-xs text-muted-foreground">
+                  Subscribe to receive weekly market intelligence briefings and platform updates.
                 </p>
 
                 {isSubscribed ? (
-                  <div className="mt-6 flex items-center justify-center gap-2 text-primary">
-                    <CheckCircle className="h-5 w-5" />
-                    <span className="font-medium">Thanks for subscribing!</span>
+                  <div className="flex items-center gap-2 border border-[#3fb950] bg-[#3fb950]/10 p-3 text-[#3fb950]">
+                    <CheckCircle className="h-4 w-4" />
+                    <span className="text-xs font-bold uppercase tracking-wide">
+                      Subscription Confirmed. Welcome to the Network.
+                    </span>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubscribe} className="mt-6">
-                    <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-                      <div className="relative">
-                        <Mail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                        <input
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          placeholder="Enter your email"
-                          required
-                          className="w-full rounded-lg border border-border bg-background py-3 pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:w-72"
-                        />
-                      </div>
+                  <form onSubmit={handleSubscribe} className="space-y-3">
+                    <div className="flex gap-2">
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter your email address"
+                        className="flex-1 border border-border bg-card px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
+                        required
+                      />
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+                        className="border border-[#3fb950] bg-[#3fb950]/10 px-4 py-2 text-xs font-bold uppercase tracking-wide text-[#3fb950] transition-colors hover:bg-[#3fb950]/20 disabled:opacity-50"
                       >
                         {isSubmitting ? (
-                          <>
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            Subscribing...
-                          </>
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
                         ) : (
                           "Subscribe"
                         )}
                       </button>
                     </div>
                     {error && (
-                      <p className="mt-3 text-sm text-destructive">{error}</p>
+                      <p className="text-[10px] font-medium uppercase tracking-wide text-[#f85149]">
+                        {error}
+                      </p>
                     )}
                   </form>
                 )}
+                <p className="mt-3 text-[10px] text-muted-foreground">
+                  By subscribing, you agree to receive market intelligence communications.
+                </p>
+              </div>
+            </div>
+
+            {/* Bottom Stats */}
+            <div className="mt-8 grid grid-cols-2 gap-4 border-t border-border pt-6 sm:grid-cols-4">
+              <div className="text-center">
+                <p className="text-xl font-bold tabular-nums text-primary">500+</p>
+                <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                  Institutions
+                </p>
+              </div>
+              <div className="text-center">
+                <p className="text-xl font-bold tabular-nums text-[#3fb950]">$2.5T</p>
+                <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                  AUM Covered
+                </p>
+              </div>
+              <div className="text-center">
+                <p className="text-xl font-bold tabular-nums text-[#58a6ff]">150+</p>
+                <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                  Markets
+                </p>
+              </div>
+              <div className="text-center">
+                <p className="text-xl font-bold tabular-nums text-[#d29922]">99.9%</p>
+                <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                  Uptime
+                </p>
               </div>
             </div>
           </div>
