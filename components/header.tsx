@@ -7,9 +7,11 @@ import { services } from "@/lib/services";
 import { cn } from "@/lib/utils";
 
 function LiveClock() {
-  const [time, setTime] = useState<string>("");
+  const [mounted, setMounted] = useState(false);
+  const [time, setTime] = useState("--:--:--");
   
   useEffect(() => {
+    setMounted(true);
     const updateTime = () => {
       const now = new Date();
       setTime(now.toLocaleTimeString("en-US", { 
@@ -24,13 +26,22 @@ function LiveClock() {
     return () => clearInterval(interval);
   }, []);
 
-  return <span className="tabular-nums">{time || "00:00:00"}</span>;
+  if (!mounted) {
+    return <span className="tabular-nums">--:--:--</span>;
+  }
+
+  return <span className="tabular-nums">{time}</span>;
 }
 
 export function Header() {
+  const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isResourcesOpen, setIsResourcesOpen] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-card">
