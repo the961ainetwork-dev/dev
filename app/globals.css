@@ -48,8 +48,33 @@ body {
   font-family: var(--font-mono), ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 15px;
+  line-height: 1.7;
+  letter-spacing: 0.005em;
+}
+
+/* Friendlier reading defaults */
+p {
+  line-height: 1.75;
+}
+
+li {
+  line-height: 1.7;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+/* Long-form content blocks: extra breathing room */
+.prose-terminal p {
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+
+.prose-terminal p:last-child {
+  margin-bottom: 0;
 }
 
 /* Terminal scrollbar */

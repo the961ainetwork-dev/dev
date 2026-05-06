@@ -3,6 +3,7 @@ import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { Sidebar } from "@/components/sidebar";
 
 const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
@@ -37,8 +38,13 @@ export default function RootLayout({
     <html lang="en" className="bg-background">
       <body className={`${ibmPlexMono.variable} ${ibmPlexSans.variable} font-mono antialiased`}>
         <Header />
-        <main>{children}</main>
-        <Footer />
+        <div className="flex">
+          <Sidebar />
+          <div className="flex min-h-[calc(100vh-4rem)] flex-1 flex-col">
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+        </div>
       </body>
     </html>
   );
