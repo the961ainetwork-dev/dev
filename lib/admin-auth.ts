@@ -12,7 +12,7 @@ const enc = new TextEncoder();
 async function getKey() {
   return crypto.subtle.importKey(
     "raw",
-    enc.encode(SECRET),
+    encodeToBuffer(SECRET),
     { name: "HMAC", hash: "SHA-256" },
     false,
     ["sign", "verify"]
@@ -28,18 +28,26 @@ function bufToHex(buf: ArrayBuffer): string {
   return out;
 }
 
-function hexToBuf(hex: string): Uint8Array {
-  if (hex.length % 2 !== 0) return new Uint8Array(0);
-  const out = new Uint8Array(hex.length / 2);
-  for (let i = 0; i < out.length; i++) {
-    out[i] = parseInt(hex.substr(i * 2, 2), 16);
+function hexToBuf(hex: string): ArrayBuffer {
+  if (hex.length % 2 !== 0) return new ArrayBuffer(0);
+  const buffer = new ArrayBuffer(hex.length / 2);
+  const view = new Uint8Array(buffer);
+  for (let i = 0; i < view.length; i++) {
+    view[i] = parseInt(hex.substr(i * 2, 2), 16);
   }
-  return out;
+  return buffer;
+}
+
+function encodeToBuffer(value: string): ArrayBuffer {
+  const u8 = enc.encode(value);
+  const buf = new ArrayBuffer(u8.byteLength);
+  new Uint8Array(buf).set(u8);
+  return buf;
 }
 
 async function sign(value: string): Promise<string> {
   const key = await getKey();
-  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(value));
+  const sig = await crypto.subtle.sign("HMAC", key, encodeToBuffer(value));
   return bufToHex(sig);
 }
 
@@ -60,7 +68,7 @@ export async function verifySessionToken(token: string | undefined): Promise<boo
   try {
     const key = await getKey();
     const sigBuf = hexToBuf(sig);
-    return await crypto.subtle.verify("HMAC", key, sigBuf, enc.encode(issued));
+    return await crypto.subtle.verify("HMAC", key, sigBuf, encodeToBuffer(issued));
   } catch {
     return false;
   }
