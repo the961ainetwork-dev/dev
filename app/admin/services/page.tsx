@@ -23,7 +23,7 @@ const empty: Partial<Service> = {
   short_description: "",
   long_description: "",
   icon: "",
-  color: "#ffb100",
+  color: "#ffffff",
   features: [],
   benefits: [],
   use_cases: [],
