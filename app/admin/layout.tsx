@@ -3,6 +3,7 @@ import Link from "next/link";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { AdminLogoutButton } from "@/components/admin/logout-button";
 import { AdminNav } from "@/components/admin/admin-nav";
+import { PublishButton } from "@/components/admin/publish-button";
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const authed = await isAdminAuthenticated();
@@ -21,6 +22,12 @@ export default async function AdminLayout({ children }: { children: ReactNode })
                 Console
               </p>
               <AdminNav />
+              <div className="mt-6 border-t border-border pt-4">
+                <p className="mb-2 text-[10px] uppercase tracking-widest text-muted-foreground">
+                  Deployment
+                </p>
+                <PublishButton />
+              </div>
               <div className="mt-6 border-t border-border pt-4">
                 <AdminLogoutButton />
                 <Link
