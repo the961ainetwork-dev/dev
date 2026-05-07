@@ -90,9 +90,16 @@ export default function NewsTerminalPage() {
   const [nowMs, setNowMs] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [autoRefresh, setAutoRefresh] = useState(true);
+  const [refreshTick, setRefreshTick] = useState(0);
+  const [lastRefreshMs, setLastRefreshMs] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
+
+  // 15 minute interval in ms
+  const REFRESH_INTERVAL_MS = 15 * 60 * 1000;
 
   useEffect(() => {
     setMounted(true);
+    setLastRefreshMs(Date.now());
     const update = () => {
       const now = new Date();
       setNowMs(now.getTime());
@@ -105,6 +112,34 @@ export default function NewsTerminalPage() {
     const timer = setInterval(update, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  // Trigger an actual refresh: brief loading state + bump tick + reset countdown
+  const triggerRefresh = () => {
+    setRefreshing(true);
+    setRefreshTick((t) => t + 1);
+    setLastRefreshMs(Date.now());
+    // brief visual cue
+    setTimeout(() => setRefreshing(false), 800);
+  };
+
+  // Auto-refresh every 15 minutes when enabled
+  useEffect(() => {
+    if (!autoRefresh || !mounted) return;
+    const id = setInterval(() => {
+      triggerRefresh();
+    }, REFRESH_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, [autoRefresh, mounted, REFRESH_INTERVAL_MS]);
+
+  // Countdown to next refresh
+  const nextRefreshIn = (() => {
+    if (!mounted || !autoRefresh || !lastRefreshMs) return "";
+    const elapsed = nowMs - lastRefreshMs;
+    const remaining = Math.max(0, REFRESH_INTERVAL_MS - elapsed);
+    const m = Math.floor(remaining / 60000);
+    const s = Math.floor((remaining % 60000) / 1000);
+    return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  })();
 
   const filteredNews = useMemo(() => {
     let filtered = [...newsItems];
@@ -134,7 +169,8 @@ export default function NewsTerminalPage() {
       }
       return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
     });
-  }, [selectedCategory, selectedRegion, searchQuery]);
+    // refreshTick included so the list re-evaluates on each 15-min refresh
+  }, [selectedCategory, selectedRegion, searchQuery, refreshTick]);
 
   const breakingCount = newsItems.filter(n => n.priority === "urgent").length;
   const todayCount = newsItems.length;
@@ -162,13 +198,31 @@ export default function NewsTerminalPage() {
           
           <div className="flex items-center gap-6">
             <button
+              onClick={triggerRefresh}
+              disabled={refreshing}
+              title="Refresh now"
+              className="flex items-center gap-2 font-mono text-xs text-muted-foreground transition-colors hover:text-primary disabled:opacity-50"
+            >
+              <RefreshCw className={`h-3 w-3 ${refreshing ? "animate-spin text-primary" : ""}`} />
+              {refreshing ? "REFRESHING..." : "REFRESH NOW"}
+            </button>
+            <button
               onClick={() => setAutoRefresh(!autoRefresh)}
               className={`flex items-center gap-2 font-mono text-xs transition-colors ${
                 autoRefresh ? "text-[#3fb950]" : "text-muted-foreground"
               }`}
             >
-              <RefreshCw className={`h-3 w-3 ${autoRefresh ? "animate-spin" : ""}`} />
+              <span
+                className={`h-1.5 w-1.5 rounded-full ${
+                  autoRefresh ? "animate-pulse bg-[#3fb950]" : "bg-muted-foreground"
+                }`}
+              />
               AUTO-REFRESH {autoRefresh ? "ON" : "OFF"}
+              {autoRefresh && nextRefreshIn && (
+                <span className="ml-1 text-muted-foreground" suppressHydrationWarning>
+                  / NEXT {nextRefreshIn}
+                </span>
+              )}
             </button>
             <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
               <Clock className="h-3 w-3" />

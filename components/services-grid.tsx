@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { services } from "@/lib/services";
+import { AskAi } from "@/components/ask-ai";
 
 export function ServicesGrid() {
   return (
@@ -22,6 +23,9 @@ export function ServicesGrid() {
             </p>
           </div>
         </div>
+
+        {/* Ask AI - natural language entry into the modules */}
+        <AskAi />
 
         {/* Services Grid */}
         <div className="grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-4">
