@@ -47,6 +47,7 @@ const sections: NavSection[] = [
     items: [
       { label: "Home", href: "/", icon: Home, code: "HOME" },
       { label: "News Terminal", href: "/news-terminal", icon: Terminal, code: "NEWS" },
+      { label: "Market Indicators", href: "/market-indicators", icon: TrendingUp, code: "MIND" },
       { label: "Platform Capabilities", href: "/platform-capabilities", icon: LayoutGrid, code: "PCAP" },
     ],
   },
