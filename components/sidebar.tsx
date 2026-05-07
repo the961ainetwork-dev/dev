@@ -20,11 +20,12 @@ import {
   HelpCircle,
   Info,
   Mail,
-  LogIn,
+      LogIn,
   UserPlus,
   LayoutGrid,
   ChevronDown,
   Sparkles,
+  Lock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -90,6 +91,7 @@ const sections: NavSection[] = [
     items: [
       { label: "Sign In", href: "/auth/login", icon: LogIn, code: "SIGN" },
       { label: "Sign Up", href: "/auth/signup", icon: UserPlus, code: "JOIN" },
+      { label: "Admin Console", href: "/admin/login", icon: Lock, code: "ADMN" },
     ],
   },
 ];
