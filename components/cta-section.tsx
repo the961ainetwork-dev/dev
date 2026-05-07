@@ -47,7 +47,7 @@ export function CTASection() {
   };
 
   return (
-    <section className="bg-background py-16">
+    <section className="bg-background py-24 md:py-28">
       <div className="mx-auto max-w-7xl px-4">
         <div className="border border-primary bg-card">
           {/* Header */}

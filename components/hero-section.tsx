@@ -79,7 +79,7 @@ export function HeroSection() {
     <section className="bg-background">
       <TickerBar />
       
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:py-16 lg:py-20">
+      <div className="mx-auto max-w-7xl px-4 pt-12 pb-20 sm:pt-16 sm:pb-28 lg:pt-20 lg:pb-32">
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
           {/* Left Column - Main Content */}
           <div className="space-y-6">

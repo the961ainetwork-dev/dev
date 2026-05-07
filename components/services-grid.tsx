@@ -5,7 +5,7 @@ import { AskAi } from "@/components/ask-ai";
 
 export function ServicesGrid() {
   return (
-    <section className="bg-card py-16">
+    <section className="bg-card py-24 md:py-28">
       <div className="mx-auto max-w-7xl px-4">
         {/* Section Header */}
         <div className="mb-8 border border-border">
