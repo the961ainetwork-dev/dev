@@ -1,47 +1,91 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown, Activity, Clock, Newspaper, BookOpen, Terminal } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import {
+  Menu,
+  X,
+  ChevronDown,
+  Activity,
+  Clock,
+  Newspaper,
+  BookOpen,
+  Terminal,
+  TrendingUp,
+  FileText,
+  Sparkles,
+  LayoutGrid,
+  Zap,
+  Megaphone,
+  CreditCard,
+  HelpCircle,
+} from "lucide-react";
 import { services } from "@/lib/services";
 import { cn } from "@/lib/utils";
 
 function LiveClock() {
   const [mounted, setMounted] = useState(false);
   const [time, setTime] = useState("--:--:--");
-  
+
   useEffect(() => {
     setMounted(true);
     const updateTime = () => {
       const now = new Date();
-      setTime(now.toLocaleTimeString("en-US", { 
-        hour12: false, 
-        hour: "2-digit", 
-        minute: "2-digit", 
-        second: "2-digit" 
-      }));
+      setTime(
+        now.toLocaleTimeString("en-US", {
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        })
+      );
     };
     updateTime();
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  if (!mounted) {
-    return <span className="tabular-nums">--:--:--</span>;
-  }
-
+  if (!mounted) return <span className="tabular-nums">--:--:--</span>;
   return <span className="tabular-nums">{time}</span>;
 }
 
+type DropdownKey = "live" | "platform" | "services" | "engage" | null;
+
+const liveItems = [
+  { href: "/news-terminal", title: "News Terminal", desc: "Live newswire feed", icon: Terminal },
+  { href: "/market-indicators", title: "Market Indicators", desc: "Macro dashboard", icon: TrendingUp },
+  { href: "/intelligence-reports", title: "Intel Reports", desc: "Daily PDF research", icon: FileText },
+];
+
+const platformItems = [
+  { href: "/capabilities", title: "Capabilities", desc: "Platform overview", icon: Zap },
+  { href: "/what-is-simulator", title: "What is Simulator", desc: "Predictive engine", icon: Sparkles },
+  { href: "/platform-capabilities", title: "Platform Tour", desc: "Modules in detail", icon: LayoutGrid },
+];
+
+const engageItems = [
+  { href: "/newsletters", title: "Newsletters", desc: "Daily & weekly intelligence", icon: Newspaper },
+  { href: "/subscriptions", title: "Subscriptions", desc: "Plans & pricing", icon: CreditCard },
+  { href: "/advertise", title: "Advertise", desc: "Sponsorship opportunities", icon: Megaphone },
+  { href: "/get-started", title: "Get Started", desc: "How it works", icon: HelpCircle },
+];
+
 export function Header() {
-  const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isServicesOpen, setIsServicesOpen] = useState(false);
-  const [isResourcesOpen, setIsResourcesOpen] = useState(false);
-  
+  const [openDropdown, setOpenDropdown] = useState<DropdownKey>(null);
+  const navRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    setMounted(true);
+    const handleClickOutside = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const closeAll = () => setOpenDropdown(null);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-card">
@@ -74,12 +118,14 @@ export function Header() {
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-bold tracking-wider text-primary">CAPITALISSUES</span>
-            <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Intelligence Terminal</span>
+            <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
+              Intelligence Terminal
+            </span>
           </div>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-0.5 lg:flex">
+        <nav ref={navRef} className="hidden items-center gap-0.5 lg:flex">
           <Link
             href="/"
             className="border border-transparent px-3 py-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground transition-colors hover:border-border hover:bg-secondary hover:text-foreground"
@@ -87,143 +133,68 @@ export function Header() {
             Home
           </Link>
 
-          {/* Services Dropdown */}
-          <div className="relative">
-            <button
-              onClick={() => {
-                setIsServicesOpen(!isServicesOpen);
-                setIsResourcesOpen(false);
-              }}
-              className="flex items-center gap-1 border border-transparent px-3 py-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground transition-colors hover:border-border hover:bg-secondary hover:text-foreground"
-            >
-              Services
-              <ChevronDown
-                className={cn(
-                  "h-3 w-3 transition-transform",
-                  isServicesOpen && "rotate-180"
-                )}
-              />
-            </button>
+          <DropdownMenu
+            label="Live"
+            isOpen={openDropdown === "live"}
+            onToggle={() => setOpenDropdown(openDropdown === "live" ? null : "live")}
+            heading="Live Intelligence"
+            width="w-72"
+          >
+            {liveItems.map((it) => (
+              <DropdownLink key={it.href} {...it} onClick={closeAll} />
+            ))}
+          </DropdownMenu>
 
-            {isServicesOpen && (
-              <>
-                <div
-                  className="fixed inset-0 z-40"
-                  onClick={() => setIsServicesOpen(false)}
-                />
-                <div className="absolute left-0 top-full z-50 mt-1 w-72 border border-border bg-card shadow-xl">
-                  <div className="border-b border-border bg-secondary/50 px-3 py-2">
-                    <span className="text-[10px] font-semibold uppercase tracking-widest text-primary">
-                      Platform Services
-                    </span>
-                  </div>
-                  <div className="max-h-80 overflow-y-auto">
-                    {services.map((service, index) => (
-                      <Link
-                        key={service.id}
-                        href={service.href}
-                        onClick={() => setIsServicesOpen(false)}
-                        className="flex items-center gap-3 border-b border-border/50 px-3 py-2 transition-colors hover:bg-secondary last:border-b-0"
-                      >
-                        <span className="text-[10px] font-bold text-muted-foreground">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <div>
-                          <p className="text-xs font-medium text-foreground">
-                            {service.shortName}
-                          </p>
-                          <p className="text-[10px] text-muted-foreground">
-                            {service.tagline}
-                          </p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
+          <DropdownMenu
+            label="Platform"
+            isOpen={openDropdown === "platform"}
+            onToggle={() => setOpenDropdown(openDropdown === "platform" ? null : "platform")}
+            heading="Platform & Capabilities"
+            width="w-72"
+          >
+            {platformItems.map((it) => (
+              <DropdownLink key={it.href} {...it} onClick={closeAll} />
+            ))}
+          </DropdownMenu>
 
-          {/* Resources Dropdown */}
-          <div className="relative">
-            <button
-              onClick={() => {
-                setIsResourcesOpen(!isResourcesOpen);
-                setIsServicesOpen(false);
-              }}
-              className="flex items-center gap-1 border border-transparent px-3 py-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground transition-colors hover:border-border hover:bg-secondary hover:text-foreground"
-            >
-              Resources
-              <ChevronDown
-                className={cn(
-                  "h-3 w-3 transition-transform",
-                  isResourcesOpen && "rotate-180"
-                )}
-              />
-            </button>
-
-            {isResourcesOpen && (
-              <>
-                <div
-                  className="fixed inset-0 z-40"
-                  onClick={() => setIsResourcesOpen(false)}
-                />
-                <div className="absolute left-0 top-full z-50 mt-1 w-64 border border-border bg-card shadow-xl">
-                  <div className="border-b border-border bg-secondary/50 px-3 py-2">
-                    <span className="text-[10px] font-semibold uppercase tracking-widest text-primary">
-                      Resources & Info
-                    </span>
-                  </div>
+          <DropdownMenu
+            label="Services"
+            isOpen={openDropdown === "services"}
+            onToggle={() => setOpenDropdown(openDropdown === "services" ? null : "services")}
+            heading="Platform Services"
+            width="w-72"
+          >
+            <div className="max-h-80 overflow-y-auto">
+              {services.map((service, index) => (
+                <Link
+                  key={service.id}
+                  href={service.href}
+                  onClick={closeAll}
+                  className="flex items-center gap-3 border-b border-border/50 px-3 py-2 transition-colors last:border-b-0 hover:bg-secondary"
+                >
+                  <span className="text-[10px] font-bold text-muted-foreground">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
                   <div>
-                    <Link
-                      href="/news-terminal"
-                      onClick={() => setIsResourcesOpen(false)}
-                      className="flex items-center gap-3 border-b border-border/50 px-3 py-2.5 transition-colors hover:bg-secondary"
-                    >
-                      <Terminal className="h-4 w-4 text-primary" />
-                      <div>
-                        <p className="text-xs font-medium text-foreground">News Terminal</p>
-                        <p className="text-[10px] text-muted-foreground">Live newswire feed</p>
-                      </div>
-                    </Link>
-                    <Link
-                      href="/newsletters"
-                      onClick={() => setIsResourcesOpen(false)}
-                      className="flex items-center gap-3 border-b border-border/50 px-3 py-2.5 transition-colors hover:bg-secondary"
-                    >
-                      <Newspaper className="h-4 w-4 text-primary" />
-                      <div>
-                        <p className="text-xs font-medium text-foreground">Newsletters</p>
-                        <p className="text-[10px] text-muted-foreground">Daily & weekly intelligence</p>
-                      </div>
-                    </Link>
-                    <Link
-                      href="/subscriptions"
-                      onClick={() => setIsResourcesOpen(false)}
-                      className="flex items-center gap-3 border-b border-border/50 px-3 py-2.5 transition-colors hover:bg-secondary"
-                    >
-                      <BookOpen className="h-4 w-4 text-primary" />
-                      <div>
-                        <p className="text-xs font-medium text-foreground">Subscriptions</p>
-                        <p className="text-[10px] text-muted-foreground">Plans & pricing</p>
-                      </div>
-                    </Link>
-                    <Link
-                      href="/get-started"
-                      onClick={() => setIsResourcesOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 transition-colors hover:bg-secondary"
-                    >
-                      <Activity className="h-4 w-4 text-primary" />
-                      <div>
-                        <p className="text-xs font-medium text-foreground">Get Started</p>
-                        <p className="text-[10px] text-muted-foreground">How it works</p>
-                      </div>
-                    </Link>
+                    <p className="text-xs font-medium text-foreground">{service.shortName}</p>
+                    <p className="text-[10px] text-muted-foreground">{service.tagline}</p>
                   </div>
-                </div>
-              </>
-            )}
-          </div>
+                </Link>
+              ))}
+            </div>
+          </DropdownMenu>
+
+          <DropdownMenu
+            label="Engage"
+            isOpen={openDropdown === "engage"}
+            onToggle={() => setOpenDropdown(openDropdown === "engage" ? null : "engage")}
+            heading="Engage & Subscribe"
+            width="w-72"
+          >
+            {engageItems.map((it) => (
+              <DropdownLink key={it.href} {...it} onClick={closeAll} />
+            ))}
+          </DropdownMenu>
 
           <Link
             href="/about"
@@ -256,7 +227,9 @@ export function Header() {
 
         {/* Mobile Menu Button */}
         <button
+          type="button"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="border border-border p-1.5 text-muted-foreground transition-colors hover:bg-secondary lg:hidden"
         >
           {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -275,64 +248,60 @@ export function Header() {
               Home
             </Link>
 
-            {/* Mobile Services */}
-            <div className="py-1">
-              <p className="px-3 text-[10px] font-semibold uppercase tracking-widest text-primary">
-                Services
-              </p>
-              <div className="mt-1 space-y-0.5">
-                {services.map((service, index) => (
-                  <Link
-                    key={service.id}
-                    href={service.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center gap-2 px-3 py-1.5 transition-colors hover:bg-secondary"
-                  >
-                    <span className="text-[10px] font-bold text-muted-foreground">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="text-xs text-foreground">{service.shortName}</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
+            <MobileGroup label="Live Intelligence">
+              {liveItems.map((it) => (
+                <Link
+                  key={it.href}
+                  href={it.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block px-3 py-1.5 text-xs text-foreground transition-colors hover:bg-secondary"
+                >
+                  {it.title}
+                </Link>
+              ))}
+            </MobileGroup>
 
-            {/* Mobile Resources */}
-            <div className="py-1">
-              <p className="px-3 text-[10px] font-semibold uppercase tracking-widest text-primary">
-                Resources
-              </p>
-              <div className="mt-1 space-y-0.5">
+            <MobileGroup label="Platform">
+              {platformItems.map((it) => (
                 <Link
-                  href="/news-terminal"
+                  key={it.href}
+                  href={it.href}
                   onClick={() => setIsMenuOpen(false)}
                   className="block px-3 py-1.5 text-xs text-foreground transition-colors hover:bg-secondary"
                 >
-                  News Terminal
+                  {it.title}
                 </Link>
+              ))}
+            </MobileGroup>
+
+            <MobileGroup label="Services">
+              {services.map((service, index) => (
                 <Link
-                  href="/newsletters"
+                  key={service.id}
+                  href={service.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center gap-2 px-3 py-1.5 transition-colors hover:bg-secondary"
+                >
+                  <span className="text-[10px] font-bold text-muted-foreground">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-xs text-foreground">{service.shortName}</span>
+                </Link>
+              ))}
+            </MobileGroup>
+
+            <MobileGroup label="Engage">
+              {engageItems.map((it) => (
+                <Link
+                  key={it.href}
+                  href={it.href}
                   onClick={() => setIsMenuOpen(false)}
                   className="block px-3 py-1.5 text-xs text-foreground transition-colors hover:bg-secondary"
                 >
-                  Newsletters
+                  {it.title}
                 </Link>
-                <Link
-                  href="/subscriptions"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block px-3 py-1.5 text-xs text-foreground transition-colors hover:bg-secondary"
-                >
-                  Subscriptions
-                </Link>
-                <Link
-                  href="/get-started"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block px-3 py-1.5 text-xs text-foreground transition-colors hover:bg-secondary"
-                >
-                  Get Started
-                </Link>
-              </div>
-            </div>
+              ))}
+            </MobileGroup>
 
             <Link
               href="/about"
@@ -369,5 +338,85 @@ export function Header() {
         </div>
       )}
     </header>
+  );
+}
+
+function DropdownMenu({
+  label,
+  isOpen,
+  onToggle,
+  heading,
+  width,
+  children,
+}: {
+  label: string;
+  isOpen: boolean;
+  onToggle: () => void;
+  heading: string;
+  width: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        className="flex items-center gap-1 border border-transparent px-3 py-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground transition-colors hover:border-border hover:bg-secondary hover:text-foreground"
+      >
+        {label}
+        <ChevronDown className={cn("h-3 w-3 transition-transform", isOpen && "rotate-180")} />
+      </button>
+      {isOpen && (
+        <div className={cn("absolute left-0 top-full z-50 mt-1 border border-border bg-card shadow-xl", width)}>
+          <div className="border-b border-border bg-secondary/50 px-3 py-2">
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-primary">
+              {heading}
+            </span>
+          </div>
+          <div>{children}</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DropdownLink({
+  href,
+  title,
+  desc,
+  icon: Icon,
+  onClick,
+}: {
+  href: string;
+  title: string;
+  desc: string;
+  icon: React.ComponentType<{ className?: string }>;
+  onClick?: () => void;
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className="flex items-center gap-3 border-b border-border/50 px-3 py-2.5 transition-colors last:border-b-0 hover:bg-secondary"
+    >
+      <Icon className="h-4 w-4 text-primary" />
+      <div>
+        <p className="text-xs font-medium text-foreground">{title}</p>
+        <p className="text-[10px] text-muted-foreground">{desc}</p>
+      </div>
+    </Link>
+  );
+}
+
+function MobileGroup({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="py-1">
+      <p className="px-3 text-[10px] font-semibold uppercase tracking-widest text-primary">
+        {label}
+      </p>
+      <div className="mt-1 space-y-0.5">{children}</div>
+    </div>
   );
 }

@@ -27,6 +27,7 @@ import {
   Sparkles,
   Lock,
   FileText,
+  Megaphone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -45,15 +46,23 @@ type NavSection = {
 
 const sections: NavSection[] = [
   {
-    label: "Main",
-    code: "MAIN",
+    label: "Live Intelligence",
+    code: "LIVE",
     items: [
       { label: "Home", href: "/", icon: Home, code: "HOME" },
-      { label: "Capabilities", href: "/capabilities", icon: Zap, code: "CAPS" },
       { label: "News Terminal", href: "/news-terminal", icon: Terminal, code: "NEWS" },
       { label: "Market Indicators", href: "/market-indicators", icon: TrendingUp, code: "MIND" },
+      { label: "Intel Reports", href: "/intelligence-reports", icon: FileText, code: "RPTS" },
+      { label: "Newsletters", href: "/newsletters", icon: Newspaper, code: "NWSL" },
+    ],
+  },
+  {
+    label: "Platform",
+    code: "PLAT",
+    items: [
+      { label: "Capabilities", href: "/capabilities", icon: Zap, code: "CAPS" },
       { label: "What is Simulator", href: "/what-is-simulator", icon: Sparkles, code: "SIM" },
-      { label: "Platform Capabilities", href: "/platform-capabilities", icon: LayoutGrid, code: "PCAP" },
+      { label: "Platform Tour", href: "/platform-capabilities", icon: LayoutGrid, code: "TOUR" },
     ],
   },
   {
@@ -71,12 +80,11 @@ const sections: NavSection[] = [
     ],
   },
   {
-    label: "Resources",
-    code: "RSRC",
+    label: "Engage",
+    code: "ENGG",
     items: [
-      { label: "Intel Reports", href: "/intelligence-reports", icon: FileText, code: "RPTS" },
-      { label: "Newsletters", href: "/newsletters", icon: Newspaper, code: "NWSL" },
-      { label: "Subscriptions", href: "/subscriptions", icon: CreditCard, code: "SUBS" },
+      { label: "Subscriptions", href: "/subscriptions", icon: CreditCard, code: "PLAN" },
+      { label: "Advertise", href: "/advertise", icon: Megaphone, code: "ADVT" },
       { label: "Get Started", href: "/get-started", icon: HelpCircle, code: "STRT" },
     ],
   },
@@ -104,10 +112,11 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
-    MAIN: true,
-    SVCS: true,
-    RSRC: true,
-    COMP: true,
+    LIVE: true,
+    PLAT: true,
+    SVCS: false,
+    ENGG: true,
+    COMP: false,
     ACCT: false,
   });
 
