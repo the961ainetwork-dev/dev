@@ -17,6 +17,11 @@ export default function ForgotPasswordPage() {
     setError(null);
 
     const supabase = createClient();
+    if (!supabase) {
+      setError("Authentication service is not available. Please try again later.");
+      setLoading(false);
+      return;
+    }
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/auth/reset-password`,
     });

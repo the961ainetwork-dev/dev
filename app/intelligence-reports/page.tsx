@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
 import {
   FileText,
   Calendar,
@@ -42,14 +41,23 @@ export default function IntelligenceReportsPage() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
+      try {
+        const res = await fetch("/api/auth/me", { cache: "no-store" });
+        if (!res.ok) {
+          router.push("/auth/login?redirect=/intelligence-reports");
+          return;
+        }
+        const data = await res.json();
+        if (!data.user) {
+          router.push("/auth/login?redirect=/intelligence-reports");
+          return;
+        }
+        setUser(data.user);
+        setLoading(false);
+      } catch (err) {
+        console.error("[v0] auth check failed:", err);
         router.push("/auth/login?redirect=/intelligence-reports");
-        return;
       }
-      setUser(user);
-      setLoading(false);
     };
     checkAuth();
   }, [router]);

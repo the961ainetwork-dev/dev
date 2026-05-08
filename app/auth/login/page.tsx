@@ -20,6 +20,11 @@ export default function LoginPage() {
     setError(null);
 
     const supabase = createClient();
+    if (!supabase) {
+      setError("Authentication service is not available. Please try again later.");
+      setLoading(false);
+      return;
+    }
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -29,7 +34,9 @@ export default function LoginPage() {
       setError(error.message);
       setLoading(false);
     } else {
-      router.push("/dashboard");
+      const params = new URLSearchParams(window.location.search);
+      const redirect = params.get("redirect") || "/intelligence-reports";
+      router.push(redirect);
       router.refresh();
     }
   };
