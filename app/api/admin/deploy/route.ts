@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { requireAdmin } from "@/lib/admin-auth";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 
 export async function POST() {
-  const authed = await requireAdmin();
+  const authed = await isAdminAuthenticated();
   if (!authed) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -47,7 +47,7 @@ export async function POST() {
 }
 
 export async function GET() {
-  const authed = await requireAdmin();
+  const authed = await isAdminAuthenticated();
   if (!authed) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
