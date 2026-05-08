@@ -48,6 +48,7 @@ const sections: NavSection[] = [
     code: "MAIN",
     items: [
       { label: "Home", href: "/", icon: Home, code: "HOME" },
+      { label: "Capabilities", href: "/capabilities", icon: Zap, code: "CAPS" },
       { label: "News Terminal", href: "/news-terminal", icon: Terminal, code: "NEWS" },
       { label: "Market Indicators", href: "/market-indicators", icon: TrendingUp, code: "MIND" },
       { label: "What is Simulator", href: "/what-is-simulator", icon: Sparkles, code: "SIM" },
