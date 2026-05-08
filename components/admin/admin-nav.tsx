@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Newspaper, LayoutGrid, Briefcase, Users, Mail } from "lucide-react";
+import { LayoutDashboard, Newspaper, LayoutGrid, Briefcase, Users, Mail, FileText } from "lucide-react";
 
 const items = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, code: "DASH" },
   { href: "/admin/news", label: "News Stories", icon: Newspaper, code: "NEWS" },
+  { href: "/admin/reports", label: "Intel Reports", icon: FileText, code: "RPTS" },
   { href: "/admin/sections", label: "Sections", icon: LayoutGrid, code: "SECT" },
   { href: "/admin/services", label: "Services", icon: Briefcase, code: "SVCS" },
   { href: "/admin/subscribers", label: "Subscribers", icon: Users, code: "SUBS" },

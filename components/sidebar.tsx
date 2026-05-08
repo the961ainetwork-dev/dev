@@ -26,6 +26,7 @@ import {
   ChevronDown,
   Sparkles,
   Lock,
+  FileText,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -73,6 +74,7 @@ const sections: NavSection[] = [
     label: "Resources",
     code: "RSRC",
     items: [
+      { label: "Intel Reports", href: "/intelligence-reports", icon: FileText, code: "RPTS" },
       { label: "Newsletters", href: "/newsletters", icon: Newspaper, code: "NWSL" },
       { label: "Subscriptions", href: "/subscriptions", icon: CreditCard, code: "SUBS" },
       { label: "Get Started", href: "/get-started", icon: HelpCircle, code: "STRT" },
