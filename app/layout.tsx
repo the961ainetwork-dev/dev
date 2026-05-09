@@ -1,27 +1,30 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { Sidebar } from "@/components/sidebar";
 
-const inter = Inter({
+const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-mono",
+});
+
+const ibmPlexSans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
 });
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-heading",
-});
-
 export const metadata: Metadata = {
-  title: "Capital Issues | Financial Intelligence Platform",
-  description: "Real-time market intelligence, sentiment analysis, and research for institutional investors. Access exclusive news, portfolio analytics, and risk management tools.",
-  keywords: ["financial intelligence", "market sentiment", "portfolio analytics", "risk management", "investment research"],
+  title: "CAPITALISSUES | Financial Intelligence Terminal",
+  description: "Real-time market intelligence, sentiment analysis, and research for institutional investors. Professional-grade financial terminal.",
+  keywords: ["financial terminal", "market data", "trading platform", "institutional research", "real-time analytics"],
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0a",
+  themeColor: "#0d1117",
   width: "device-width",
   initialScale: 1,
 };
@@ -33,10 +36,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-background">
-      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
+      <body className={`${ibmPlexMono.variable} ${ibmPlexSans.variable} font-mono antialiased`}>
         <Header />
-        <main>{children}</main>
-        <Footer />
+        <div className="flex">
+          <Sidebar />
+          <div className="flex min-h-[calc(100vh-4rem)] flex-1 flex-col">
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+        </div>
       </body>
     </html>
   );
