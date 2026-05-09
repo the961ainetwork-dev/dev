@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Megaphone, Crown, Newspaper, Layers, Monitor, Sidebar as SidebarIcon, Sparkles, ArrowRight, Check, Mail } from "lucide-react";
-import { LeadersGrid } from "@/components/advertise/leaders-grid";
 
 export const metadata: Metadata = {
   title: "Advertise | Capital Issues IQ",
@@ -147,25 +146,6 @@ export default function AdvertisePage() {
               <p className="mt-1 font-mono text-2xl text-foreground">68%</p>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="border-b border-border bg-card">
-        <div className="mx-auto max-w-7xl px-4 py-20 lg:py-24">
-          <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-6">
-            <div>
-              <p className="text-[10px] uppercase tracking-widest text-primary">CURRENT SPONSORS // LEAD.001</p>
-              <h2 className="mt-2 font-serif text-3xl text-foreground md:text-4xl">Strategic Leaders</h2>
-              <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-                Active leader card sponsors featured across the Capital Issues IQ
-                intelligence terminal.
-              </p>
-            </div>
-            <Link href="/contact" className="text-xs uppercase tracking-widest text-primary hover:underline">
-              Become a leader &rarr;
-            </Link>
-          </div>
-          <LeadersGrid />
         </div>
       </section>
 
