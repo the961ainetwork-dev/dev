@@ -14,7 +14,7 @@ async function getStats() {
       sb.from("sections").select("id", { count: "exact", head: true }),
       sb.from("newsletter_subscriptions").select("id", { count: "exact", head: true }),
       sb.from("contact_submissions").select("id", { count: "exact", head: true }),
-      sb.from("news_stories").select("id", { count: "exact", head: true, eq: ["is_editor_pick", true] }),
+      sb.from("news_stories").select("id", { count: "exact", head: true }).eq("is_editor_pick", true),
     ]);
     return {
       news: counts[0].count ?? 0,
