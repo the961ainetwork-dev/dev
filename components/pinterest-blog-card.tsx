@@ -36,21 +36,21 @@ export function PinterestBlogCard({
 
   const getCategoryColor = (cat: string) => {
     const colors: { [key: string]: string } = {
-      breaking: "bg-[#f85149] text-white",
-      markets: "bg-[#3fb950] text-white",
-      banking: "bg-[#58a6ff] text-white",
-      economy: "bg-[#d29922] text-black",
-      politics: "bg-[#a371f7] text-white",
+      breaking: "bg-destructive/80 text-white",
+      markets: "bg-accent-green text-black",
+      banking: "bg-accent-blue text-white",
+      economy: "bg-warning text-black",
+      politics: "bg-accent-purple text-white",
       energy: "bg-[#fb8500] text-white",
-      technology: "bg-[#1f6feb] text-white",
-      analysis: "bg-[#6e40c9] text-white",
+      technology: "bg-accent-cyan text-black",
+      analysis: "bg-accent-purple text-white",
     };
-    return colors[cat] || "bg-primary text-primary-foreground";
+    return colors[cat] || "bg-accent text-accent-foreground";
   };
 
   return (
     <Link href={`/news/${id}`}>
-      <div className="group relative overflow-hidden border border-border bg-card transition-all duration-300 hover:border-primary hover:shadow-lg">
+      <div className="group relative overflow-hidden border border-border bg-card rounded-xl transition-all duration-300 hover:border-accent/50 hover:shadow-xl">
         {/* Image Container */}
         <div className="relative aspect-video overflow-hidden bg-secondary">
           {featured_image_url && !imageError ? (
@@ -61,7 +61,7 @@ export function PinterestBlogCard({
                 loading="lazy"
                 onLoad={() => setImageLoaded(true)}
                 onError={() => setImageError(true)}
-                className={`h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 ${
+                className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 ${
                   imageLoaded ? "opacity-100" : "opacity-0"
                 }`}
               />
@@ -72,28 +72,28 @@ export function PinterestBlogCard({
           ) : (
             <div className="flex h-full items-center justify-center">
               <div className="text-center text-muted-foreground">
-                <div className="h-12 w-12 mx-auto mb-2 bg-border rounded-lg" />
+                <div className="h-12 w-12 mx-auto mb-2 bg-border rounded" />
                 <span className="text-xs">No image</span>
               </div>
             </div>
           )}
 
           {/* Category Badge */}
-          <div className={`absolute top-2 left-2 px-2 py-1 text-xs font-bold uppercase tracking-widest ${getCategoryColor(category)}`}>
-            {category}
+          <div className={`absolute top-3 left-3 px-2 py-1 text-xs font-semibold rounded-md ${getCategoryColor(category)}`}>
+            {category.toUpperCase()}
           </div>
 
           {/* Date Badge */}
-          <div className="absolute top-2 right-2 flex items-center gap-1 bg-black/60 backdrop-blur-sm px-2 py-1 border border-white/10">
-            <Calendar className="h-3 w-3 text-white" />
-            <span className="text-xs text-white font-mono">{formattedDate}</span>
+          <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/40 backdrop-blur px-2 py-1 rounded text-xs text-white">
+            <Calendar className="h-3 w-3" />
+            {formattedDate}
           </div>
         </div>
 
         {/* Content */}
         <div className="p-4 space-y-3">
           {/* Headline */}
-          <h3 className="line-clamp-2 text-sm font-bold text-foreground group-hover:text-primary transition-colors">
+          <h3 className="line-clamp-2 text-sm font-semibold text-foreground group-hover:text-accent transition-colors">
             {headline}
           </h3>
 
@@ -104,31 +104,26 @@ export function PinterestBlogCard({
 
           {/* Region Badge & Tags */}
           <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border">
-            <span className="inline-block border border-border px-2 py-1 text-[10px] uppercase tracking-widest text-muted-foreground hover:border-primary hover:text-primary">
+            <span className="inline-block px-2 py-1 text-[10px] font-medium rounded bg-secondary text-muted-foreground">
               {region}
             </span>
 
             {tags.slice(0, 1).map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest text-muted-foreground hover:text-primary"
+                className="inline-flex items-center gap-1 text-[10px] text-muted-foreground"
               >
-                <Tag className="h-2.5 w-2.5" />
+                <Tag className="h-3 w-3" />
                 {tag}
               </span>
             ))}
 
             {tags.length > 1 && (
               <span className="text-[10px] text-muted-foreground">
-                +{tags.length - 1} more
+                +{tags.length - 1}
               </span>
             )}
           </div>
-        </div>
-
-        {/* Hover Arrow */}
-        <div className="absolute bottom-4 right-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <div className="text-primary text-xl">→</div>
         </div>
       </div>
     </Link>

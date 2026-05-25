@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import { IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -11,12 +11,6 @@ const ibmPlexMono = IBM_Plex_Mono({
   variable: "--font-mono",
 });
 
-const ibmPlexSans = IBM_Plex_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-sans",
-});
-
 export const metadata: Metadata = {
   title: "CAPITALISSUES | Financial Intelligence Terminal",
   description: "Real-time market intelligence, sentiment analysis, and research for institutional investors. Professional-grade financial terminal.",
@@ -24,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0d1117",
+  themeColor: "#0f0f0f",
   width: "device-width",
   initialScale: 1,
 };
@@ -36,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-background">
-      <body className={`${ibmPlexMono.variable} ${ibmPlexSans.variable} font-mono antialiased`}>
+      <body className={`${ibmPlexMono.variable} font-sans antialiased bg-background text-foreground`}>
         <Header />
         <div className="flex">
           <Sidebar />
@@ -49,3 +43,4 @@ export default function RootLayout({
     </html>
   );
 }
+
