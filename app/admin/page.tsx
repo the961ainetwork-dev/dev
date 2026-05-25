@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { Newspaper, LayoutGrid, Briefcase, Users, Mail, Rocket } from "lucide-react";
+import { Newspaper, LayoutGrid, Briefcase, Users, Mail, Rocket, Star } from "lucide-react";
 import { PublishButton } from "@/components/admin/publish-button";
 
 export const dynamic = "force-dynamic";
@@ -14,6 +14,7 @@ async function getStats() {
       sb.from("sections").select("id", { count: "exact", head: true }),
       sb.from("newsletter_subscriptions").select("id", { count: "exact", head: true }),
       sb.from("contact_submissions").select("id", { count: "exact", head: true }),
+      sb.from("news_stories").select("id", { count: "exact", head: true, eq: ["is_editor_pick", true] }),
     ]);
     return {
       news: counts[0].count ?? 0,
@@ -21,9 +22,10 @@ async function getStats() {
       sections: counts[2].count ?? 0,
       subscribers: counts[3].count ?? 0,
       contacts: counts[4].count ?? 0,
+      editorPicks: counts[5].count ?? 0,
     };
   } catch {
-    return { news: 0, services: 0, sections: 0, subscribers: 0, contacts: 0 };
+    return { news: 0, services: 0, sections: 0, subscribers: 0, contacts: 0, editorPicks: 0 };
   }
 }
 
@@ -32,6 +34,7 @@ export default async function AdminDashboardPage() {
 
   const tiles = [
     { href: "/admin/news", label: "News Stories", value: stats.news, icon: Newspaper, code: "NEWS" },
+    { href: "/admin/editor-picks", label: "Editor Picks", value: stats.editorPicks, icon: Star, code: "PICK" },
     { href: "/admin/sections", label: "Sections", value: stats.sections, icon: LayoutGrid, code: "SECT" },
     { href: "/admin/services", label: "Services", value: stats.services, icon: Briefcase, code: "SVCS" },
     { href: "/admin/subscribers", label: "Newsletter Subscribers", value: stats.subscribers, icon: Users, code: "SUBS" },
